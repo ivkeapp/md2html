@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Debug md2html Theme</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .debug {
+      background: #f0f0f0;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Debug md2html Theme Problem</h1>
+  
+  <div class="debug">
+    <h3>Debug Info:</h3>
+    <p id="debug-info">Loading...</p>
+  </div>
+  
+  <textarea id="input" rows="6" cols="80">
+# Test naslov
+
+Ovo je **podebljan** tekst i ovo je *italic* tekst.
+
+- Stavka 1  
+- Stavka 2
+  </textarea>
+  
+  <br><br>
+  <button id="convert">Konvertuj u HTML</button>
+  <button id="theme-light">Light tema</button>
+  <button id="theme-dark">Dark tema</button>
+  <button id="debug-theme">Debug Theme</button>
+  
+  <div id="output" style="border: 2px solid #ccc; padding: 20px; margin-top: 20px; min-height: 200px;"></div>
+  
+  <!-- Učitaj sa CDN -->
+  <script src="https://unpkg.com/md2html-themes@latest/dist/md2html.min.js"></script>
+  
+  <script>
+    // Debug funkcija
+    function debugInfo() {
+      const info = document.getElementById('debug-info');
+      info.innerHTML = `
+        <strong>md2html object:</strong> ${typeof window.md2html}<br>
+        <strong>Available functions:</strong> ${Object.keys(window.md2html || {}).join(', ')}<br>
+        <strong>Themes available:</strong> ${window.md2html?.themes ? Object.keys(window.md2html.themes).join(', ') : 'N/A'}<br>
+        <strong>applyTheme function:</strong> ${typeof window.md2html?.applyTheme}<br>
+      `;
+    }
+
+    window.addEventListener('load', () => {
+      debugInfo();
+    });
+
+    document.getElementById('convert').addEventListener('click', async () => {
+      const markdown = document.getElementById('input').value;
+      console.log('Converting markdown:', markdown);
+      
+      try {
+        const result = await window.md2html.parse(markdown);
+        console.log('Parse result:', result);
+        
+        const outputDiv = document.getElementById('output');
+        outputDiv.innerHTML = result.html;
+        console.log('HTML set in output div');
+        
+        // Pokušaj odmah da primijenimo light theme
+        console.log('Applying light theme...');
+        window.md2html.applyTheme(window.md2html.themes.light, outputDiv);
+        console.log('Light theme applied');
+        
+      } catch (error) {
+        console.error('Greška:', error);
+      }
+    });
+
+    document.getElementById('theme-light').addEventListener('click', () => {
+      console.log('Light theme button clicked');
+      const outputDiv = document.getElementById('output');
+      console.log('Output div:', outputDiv);
+      console.log('Light theme object:', window.md2html.themes.light);
+      
+      try {
+        window.md2html.applyTheme(window.md2html.themes.light, outputDiv);
+        console.log('Light theme applied successfully');
+      } catch (error) {
+        console.error('Error applying light theme:', error);
+      }
+    });
+
+    document.getElementById('theme-dark').addEventListener('click', () => {
+      console.log('Dark theme button clicked');
+      const outputDiv = document.getElementById('output');
+      console.log('Output div:', outputDiv);
+      console.log('Dark theme object:', window.md2html.themes.dark);
+      
+      try {
+        window.md2html.applyTheme(window.md2html.themes.dark, outputDiv);
+        console.log('Dark theme applied successfully');
+      } catch (error) {
+        console.error('Error applying dark theme:', error);
+      }
+    });
+
+    document.getElementById('debug-theme').addEventListener('click', () => {
+      const outputDiv = document.getElementById('output');
+      console.log('=== THEME DEBUG ===');
+      console.log('Output div styles before:', outputDiv.style.cssText);
+      
+      // Pokušaj ručno da postavimo CSS varijable
+      outputDiv.style.setProperty('--color-background', '#ff0000');
+      outputDiv.style.setProperty('--color-text', '#ffffff');
+      outputDiv.style.backgroundColor = 'var(--color-background)';
+      outputDiv.style.color = 'var(--color-text)';
+      
+      console.log('Output div styles after:', outputDiv.style.cssText);
+      console.log('Computed styles:', getComputedStyle(outputDiv).backgroundColor);
+    });
+  </script>
+</body>
+</html>

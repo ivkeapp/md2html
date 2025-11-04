@@ -21,8 +21,10 @@ import md2html from 'md2html-themes';
 const result = await md2html.parse('# Hello World\n\nThis is **bold** text.');
 console.log(result.html);
 
-// Apply a theme
-md2html.applyTheme(md2html.themes.dark);
+// Apply a theme with automatic CSS injection (NEW in v1.1.0!)
+const container = document.getElementById('preview');
+container.innerHTML = result.html;
+md2html.applyThemeWithStyles(md2html.themes.dark, container);
 ```
 
 ### Browser (with bundler)
@@ -33,8 +35,11 @@ import md2html from 'md2html-themes';
 // Parse and render
 async function renderMarkdown(markdown) {
   const result = await md2html.parse(markdown);
-  document.getElementById('preview').innerHTML = result.html;
-  md2html.applyTheme(md2html.themes.light);
+  const preview = document.getElementById('preview');
+  preview.innerHTML = result.html;
+  
+  // NEW: Automatic CSS injection - no manual CSS needed!
+  md2html.applyThemeWithStyles(md2html.themes.light, preview);
 }
 
 renderMarkdown('# Hello from Browser!');
@@ -59,12 +64,81 @@ renderMarkdown('# Hello from Browser!');
     // md2html is available as a global variable
     (async () => {
       const result = await md2html.parse('# Hello World\n\n**Markdown** is easy!');
-      document.getElementById('preview').innerHTML = result.html;
-      md2html.applyTheme(md2html.themes.light);
+      const preview = document.getElementById('preview');
+      preview.innerHTML = result.html;
+      
+      // NEW in v1.1.0: CSS styles automatically included!
+      md2html.applyThemeWithStyles(md2html.themes.light, preview);
     })();
   </script>
 </body>
 </html>
+```
+
+## Theme Application Methods
+
+### Method 1: Automatic CSS Injection (Recommended) ⭐
+
+**NEW in v1.1.0** - CSS styles are automatically injected into the page:
+
+```javascript
+// No manual CSS required! Everything is handled automatically.
+md2html.applyThemeWithStyles(theme, container, options);
+```
+
+**Complete Example:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auto CSS Example</title>
+</head>
+<body>
+  <div id="output"></div>
+  
+  <script src="https://unpkg.com/md2html-themes@latest/dist/md2html.min.js"></script>
+  <script>
+    (async () => {
+      const markdown = '# Hello World\n\nThis **works** without manual CSS!';
+      const result = await md2html.parse(markdown);
+      const output = document.getElementById('output');
+      output.innerHTML = result.html;
+      
+      // Magic! No CSS files or manual styling needed
+      md2html.applyThemeWithStyles(md2html.themes.dark, output);
+    })();
+  </script>
+</body>
+</html>
+```
+
+**Options:**
+```javascript
+md2html.applyThemeWithStyles(theme, container, {
+  addClassName: true,    // Add .md-content class to container
+  styleId: 'my-styles'   // Custom ID for the injected <style> tag
+});
+```
+
+### Method 2: Manual CSS Variables (Legacy)
+
+**For advanced users** who want full control over styling:
+
+```javascript
+// Sets CSS variables - you provide the CSS that uses them
+md2html.applyTheme(theme, container);
+```
+
+You must provide CSS that uses the variables:
+```html
+<style>
+  .my-markdown {
+    color: var(--color-text);
+    background: var(--color-surface);
+    font-family: var(--font-family);
+    /* ... more CSS using the variables ... */
+  }
+</style>
 ```
 
 ## Development Setup (Contributing)

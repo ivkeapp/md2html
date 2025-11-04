@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>md2html Test - NOVA applyThemeWithStyles funkcija</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f5f5f5;
+    }
+    
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    
+    button:hover {
+      background: #f0f0f0;
+    }
+    
+    textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    #output {
+      border: 2px solid #ccc;
+      margin-top: 20px;
+      min-height: 200px;
+      border-radius: 8px;
+      /* NEMA potrebe za CSS varijablama - biblioteka ih automatski dodaje! */
+    }
+  </style>
+</head>
+<body>
+  <h1>Test md2html Package - NOVA applyThemeWithStyles</h1>
+  <p><strong>Sada CSS stilovi se automatski uključuju u biblioteku!</strong></p>
+  
+  <textarea id="input" rows="10" cols="80">
+# Test naslov
+
+Ovo je **podebljan** tekst i ovo je *italic* tekst.
+
+## Podneslov
+
+- Stavka 1  
+- Stavka 2
+
+### Kod primer
+
+```javascript
+console.log('Hello World!');
+const x = 42;
+```
+
+> Ovo je blockquote sa **formatiranim** tekstom
+
+| Kolona 1 | Kolona 2 |
+|----------|----------|
+| Data 1   | Data 2   |
+| Data 3   | Data 4   |
+
+[Link primer](https://example.com)
+  </textarea>
+  
+  <br><br>
+  <button id="convert">Konvertuj u HTML</button>
+  <button id="theme-light">Light tema ☀️</button>
+  <button id="theme-dark">Dark tema 🌙</button>
+  
+  <div id="output"></div>
+  
+  <!-- Učitaj sa CDN -->
+  <script src="./dist/md2html.min.js"></script>
+  
+  <script>
+    console.log('md2html object:', window.md2html);
+    console.log('Available functions:', Object.keys(window.md2html));
+    console.log('Has applyThemeWithStyles:', typeof window.md2html.applyThemeWithStyles);
+
+    document.getElementById('convert').addEventListener('click', async () => {
+      const markdown = document.getElementById('input').value;
+      const result = await window.md2html.parse(markdown);
+      const outputDiv = document.getElementById('output');
+      outputDiv.innerHTML = result.html;
+      
+      // Koristi NOVU funkciju koja automatski uključuje CSS stilove!
+      window.md2html.applyThemeWithStyles(window.md2html.themes.light, outputDiv);
+      console.log('Applied theme with styles!');
+    });
+
+    document.getElementById('theme-light').addEventListener('click', () => {
+      const outputDiv = document.getElementById('output');
+      // Koristi NOVU funkciju - nema potrebe za ručnim CSS!
+      window.md2html.applyThemeWithStyles(window.md2html.themes.light, outputDiv);
+      console.log('Switched to light theme');
+    });
+
+    document.getElementById('theme-dark').addEventListener('click', () => {
+      const outputDiv = document.getElementById('output');
+      // Koristi NOVU funkciju - nema potrebe za ručnim CSS!
+      window.md2html.applyThemeWithStyles(window.md2html.themes.dark, outputDiv);
+      console.log('Switched to dark theme');
+    });
+
+    // Automatski konvertuj početni sadržaj
+    window.addEventListener('load', async () => {
+      setTimeout(async () => {
+        const markdown = document.getElementById('input').value;
+        const result = await window.md2html.parse(markdown);
+        const outputDiv = document.getElementById('output');
+        outputDiv.innerHTML = result.html;
+        
+        // Koristi NOVU funkciju!
+        window.md2html.applyThemeWithStyles(window.md2html.themes.light, outputDiv);
+        console.log('Auto-converted and applied theme with styles!');
+      }, 100);
+    });
+  </script>
+</body>
+</html>

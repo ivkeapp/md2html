@@ -10,6 +10,7 @@ import { sanitizeHtml, sanitizeWithReport, hasDangerousContent } from './sanitiz
 import { 
   themes, 
   applyTheme, 
+  applyThemeWithStyles,
   exportTheme, 
   importTheme, 
   cloneTheme,
@@ -292,11 +293,19 @@ ${metaTags}  <title>${title}</title>
 }
 
 /**
- * Apply theme to preview container in DOM
+ * Apply theme to preview container in DOM (legacy - requires manual CSS)
  * @param {object} theme - Theme object
  * @param {HTMLElement} container - Container element
  */
 export { applyTheme };
+
+/**
+ * Apply theme with complete CSS styles automatically injected
+ * @param {object} theme - Theme object
+ * @param {HTMLElement} container - Container element
+ * @param {object} options - Options for styling
+ */
+export { applyThemeWithStyles };
 
 /**
  * Export theme as JSON
@@ -342,6 +351,7 @@ export default {
   parse,
   toFullHtml,
   applyTheme,
+  applyThemeWithStyles,
   exportTheme,
   importTheme,
   cloneTheme,

@@ -71,13 +71,15 @@ const blob = new Blob([html], { type: 'text/html' });
 
 ### `applyTheme(theme, container)`
 
-Apply theme to a DOM container via CSS variables.
+Apply theme to a DOM container via CSS variables (legacy method).
 
 **Parameters:**
 - `theme` (object): Theme object
 - `container` (HTMLElement, optional): Target element (default: `document.documentElement`)
 
 **Returns:** `void`
+
+**Note:** This method only sets CSS variables. You must provide CSS that uses these variables.
 
 **Example:**
 ```javascript
@@ -87,6 +89,52 @@ md2html.applyTheme(md2html.themes.dark);
 // Apply to specific container
 const preview = document.getElementById('preview');
 md2html.applyTheme(md2html.themes.light, preview);
+```
+
+---
+
+### `applyThemeWithStyles(theme, container, options)` ⭐
+
+**NEW in v1.1.0** - Apply theme with automatic CSS injection.
+
+**Parameters:**
+- `theme` (object): Theme object
+- `container` (HTMLElement): Target container element
+- `options` (object, optional):
+  - `addClassName` (boolean): Add `.md-content` class to container (default: `true`)
+  - `styleId` (string): Custom ID for injected `<style>` tag (default: `'md2html-theme-styles'`)
+
+**Returns:** `void`
+
+**Features:**
+- Automatically injects complete CSS styles into `<head>`
+- Adds `.md-content` class to container for styling
+- Replaces previous styles when called multiple times
+- No manual CSS required
+
+**Example:**
+```javascript
+// Recommended approach - no manual CSS needed!
+const container = document.getElementById('preview');
+container.innerHTML = result.html;
+md2html.applyThemeWithStyles(md2html.themes.dark, container);
+
+// With custom options
+md2html.applyThemeWithStyles(md2html.themes.light, container, {
+  addClassName: false,
+  styleId: 'my-custom-styles'
+});
+```
+
+**Comparison:**
+```javascript
+// OLD WAY (still works):
+md2html.applyTheme(theme, container);
+// + You must write CSS that uses var(--color-text), etc.
+
+// NEW WAY (recommended):
+md2html.applyThemeWithStyles(theme, container);
+// + CSS is automatically injected - no manual CSS needed!
 ```
 
 ---

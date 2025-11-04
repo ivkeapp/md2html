@@ -190,7 +190,198 @@ export function themeToCssVariables(theme) {
 }
 
 /**
- * Apply theme to a container element via CSS variables
+ * Generate complete CSS styles for markdown content with theme variables
+ * @param {object} theme - Theme object
+ * @returns {string} - Complete CSS styles
+ */
+function generateMarkdownCSS(theme) {
+  const cssVariables = themeToCssVariables(theme);
+  
+  return `
+    :root {
+      ${cssVariables}
+    }
+    
+    .md-content {
+      font-family: var(--font-family);
+      font-size: var(--font-size-base);
+      line-height: var(--line-height);
+      color: var(--color-text);
+      background: var(--color-surface);
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+    }
+    
+    .md-content h1 {
+      font-size: var(--h1-size);
+      font-weight: var(--h1-weight);
+      color: var(--color-headings);
+      margin-bottom: var(--spacing-block);
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--color-border);
+    }
+    
+    .md-content h2 {
+      font-size: var(--h2-size);
+      font-weight: var(--h2-weight);
+      color: var(--color-headings);
+      margin-top: var(--spacing-block);
+      margin-bottom: var(--spacing-paragraph);
+    }
+    
+    .md-content h3 {
+      font-size: var(--h3-size);
+      font-weight: var(--h3-weight);
+      color: var(--color-headings);
+      margin-top: var(--spacing-block);
+      margin-bottom: var(--spacing-paragraph);
+    }
+    
+    .md-content h4 {
+      font-size: var(--h4-size);
+      font-weight: var(--h4-weight);
+      color: var(--color-headings);
+      margin-top: var(--spacing-paragraph);
+      margin-bottom: var(--spacing-paragraph);
+    }
+    
+    .md-content p {
+      margin-bottom: var(--spacing-paragraph);
+    }
+    
+    .md-content a {
+      color: var(--color-links);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    
+    .md-content a:hover {
+      color: var(--color-links-hover);
+      border-bottom-color: var(--color-links-hover);
+    }
+    
+    .md-content strong {
+      font-weight: 600;
+    }
+    
+    .md-content em {
+      font-style: italic;
+    }
+    
+    .md-content del {
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+    
+    .md-content code {
+      font-family: var(--code-font-family);
+      font-size: var(--code-font-size);
+      background: var(--color-inline-code-bg);
+      color: var(--color-inline-code-text);
+      padding: 0.2em 0.4em;
+      border-radius: 0.25rem;
+    }
+    
+    .md-content pre {
+      background: var(--color-code-bg);
+      color: var(--color-code-text);
+      padding: var(--code-block-padding);
+      border-radius: var(--code-border-radius);
+      overflow-x: auto;
+      margin-bottom: var(--spacing-block);
+      line-height: var(--code-line-height);
+    }
+    
+    .md-content pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+      font-size: var(--code-font-size);
+    }
+    
+    .md-content blockquote {
+      border-left: 4px solid var(--color-blockquote-border);
+      background: var(--color-blockquote-bg);
+      padding: 1rem 1.5rem;
+      margin: var(--spacing-block) 0;
+      font-style: italic;
+    }
+    
+    .md-content ul, .md-content ol {
+      margin-bottom: var(--spacing-block);
+      padding-left: var(--list-nested-indent);
+    }
+    
+    .md-content ul {
+      list-style-type: var(--list-bullet-style);
+    }
+    
+    .md-content ol {
+      list-style-type: var(--list-ordered-style);
+    }
+    
+    .md-content li {
+      margin-bottom: var(--spacing-list);
+    }
+    
+    .md-content li > ul,
+    .md-content li > ol {
+      margin-top: var(--spacing-list);
+      margin-bottom: 0;
+    }
+    
+    .md-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--spacing-block);
+    }
+    
+    .md-content thead {
+      background: var(--color-table-header);
+    }
+    
+    .md-content th,
+    .md-content td {
+      padding: var(--table-cell-padding);
+      border: var(--table-border-width) var(--table-border-style) var(--color-border);
+      text-align: left;
+    }
+    
+    .md-content th {
+      font-weight: 600;
+    }
+    
+    .md-content tbody tr:nth-child(even) {
+      background: var(--color-table-row-alt);
+    }
+    
+    .md-content tbody tr:nth-child(odd) {
+      background: var(--color-table-row);
+    }
+    
+    .md-content img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: var(--spacing-block) 0;
+      border-radius: 0.375rem;
+    }
+    
+    .md-content hr {
+      border: none;
+      border-top: 2px solid var(--color-border);
+      margin: var(--spacing-block) 0;
+    }
+    
+    .md-content input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+  `.trim();
+}
+
+/**
+ * Apply theme to a container element via CSS variables (legacy)
  * @param {object} theme - Theme object
  * @param {HTMLElement} container - Container element (defaults to document.documentElement)
  */
@@ -209,6 +400,36 @@ export function applyTheme(theme, container = document.documentElement) {
       container.style.setProperty(prop, value);
     }
   });
+}
+
+/**
+ * Apply theme with complete CSS styles automatically injected
+ * @param {object} theme - Theme object
+ * @param {HTMLElement} container - Container element
+ * @param {object} options - Options for styling
+ */
+export function applyThemeWithStyles(theme, container, options = {}) {
+  const { 
+    addClassName = true,
+    styleId = 'md2html-theme-styles'
+  } = options;
+  
+  // Add CSS class to container for styling
+  if (addClassName && !container.classList.contains('md-content')) {
+    container.classList.add('md-content');
+  }
+  
+  // Remove existing style tag if it exists
+  const existingStyle = document.getElementById(styleId);
+  if (existingStyle) {
+    existingStyle.remove();
+  }
+  
+  // Create and inject new style tag
+  const styleTag = document.createElement('style');
+  styleTag.id = styleId;
+  styleTag.textContent = generateMarkdownCSS(theme);
+  document.head.appendChild(styleTag);
 }
 
 /**
