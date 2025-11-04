@@ -21,6 +21,10 @@ A lightweight, dependency-minimal JavaScript library for converting Markdown to 
 ### Installation
 
 ```bash
+# Install from NPM
+npm install @ivkeapp/md2html
+
+# Or for development
 npm install
 npm run start
 ```
@@ -43,7 +47,7 @@ Open http://localhost:3000 to see the demo.
 ### ES Module
 
 ```javascript
-import md2html from 'md2html';
+import md2html from '@ivkeapp/md2html';
 
 // Parse markdown
 const result = await md2html.parse('# Hello World');
