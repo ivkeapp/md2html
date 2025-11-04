@@ -1,6 +1,6 @@
 {
-  "name": "@ivkeapp/md2html",
-  "version": "1.0.1",
+  "name": "md2html-themes",
+  "version": "1.0.0",
   "description": "A lightweight, dependency-minimal JavaScript library for converting Markdown to themed HTML in-browser",
   "main": "dist/md2html.min.js",
   "type": "module",
@@ -18,9 +18,6 @@
   "homepage": "https://github.com/ivkeapp/md2html#readme",
   "bugs": {
     "url": "https://github.com/ivkeapp/md2html/issues"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "scripts": {
     "start": "vite public --open",
