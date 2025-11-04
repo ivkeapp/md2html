@@ -150,7 +150,87 @@ Type definitions location: `dist/index.d.ts` (automatically resolved by TypeScri
 - Check [API.md](./API.md) for complete API reference
 - Explore [THEME_SCHEMA.md](./THEME_SCHEMA.md) for theme customization
 
+## Quick Start After Installation
+
+After installing `md2html-themes`, here's how to get started:
+
+### 1. Create Your Files
+
+**index.html:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>md2html Example</title>
+</head>
+<body>
+  <h1>Markdown to HTML Converter</h1>
+  <textarea id="input" rows="10" cols="80">
+# Hello World
+
+This is **bold** and this is *italic*.
+
+- Item 1
+- Item 2
+  </textarea>
+  <button id="convert">Convert</button>
+  <div id="output"></div>
+  
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
+```
+
+**app.js:**
+```javascript
+import md2html from 'md2html-themes';
+
+document.getElementById('convert').addEventListener('click', async () => {
+  const markdown = document.getElementById('input').value;
+  const result = await md2html.parse(markdown);
+  
+  document.getElementById('output').innerHTML = result.html;
+  md2html.applyTheme(md2html.themes.light);
+});
+```
+
+### 2. Run a Local Dev Server
+
+**Important:** You cannot open the HTML file directly (`file://` protocol) due to browser CORS restrictions. You must use a local server:
+
+```bash
+# Option 1: Using Vite (recommended, fast HMR)
+npx vite
+
+# Option 2: Using http-server
+npx http-server
+
+# Option 3: Using Python (if installed)
+python -m http.server 8000
+
+# Option 4: Using Node.js built-in
+npx serve
+```
+
+### 3. Open in Browser
+
+Open the URL shown in the terminal:
+- Vite: `http://localhost:5173`
+- http-server: `http://localhost:8080`
+- Python: `http://localhost:8000`
+
 ## Troubleshooting
+
+### CORS Errors
+
+**Problem:** `Access to script at 'file://...' blocked by CORS policy`
+
+**Solution:** You must run a local development server. Cannot open HTML files directly in the browser when using ES modules.
+
+```bash
+npx vite
+```
 
 ### Import Errors
 

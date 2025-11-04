@@ -83,7 +83,22 @@ document.getElementById('convert').addEventListener('click', async () => {
 });
 ```
 
-Then run with a dev server (e.g., `npx vite` or `python -m http.server`).
+**Then serve with a local dev server:**
+
+```bash
+# Option 1: Using Vite (recommended)
+npx vite
+
+# Option 2: Using http-server
+npx http-server
+
+# Option 3: Using Python
+python -m http.server 8000
+```
+
+Open the URL shown in the terminal (usually `http://localhost:5173` for Vite).
+
+> **Note:** You cannot open the HTML file directly (`file://`) due to CORS restrictions. You must use a local server.
 
 ### Basic Usage (NPM)
 
