@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Convert Markdown to themed HTML in your browser">
+  <title>md2html - Markdown to Themed HTML Converter</title>
+  <link rel="stylesheet" href="./src/styles/base.css">
+  <link rel="stylesheet" href="./src/styles/theme-light.css">
+  <link rel="stylesheet" href="./src/styles/theme-dark.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" role="complementary">
+      <div class="sidebar-header">
+        <h1>md2html</h1>
+        <p>Markdown → Themed HTML</p>
+      </div>
+      
+      <div class="sidebar-content">
+        <!-- File Upload Section -->
+        <section class="sidebar-section">
+          <h2>Load File</h2>
+          <div id="fileDropContainer"></div>
+          <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+            <button class="btn btn-small" id="pasteBtn" aria-label="Paste markdown from clipboard">
+              📋 Paste
+            </button>
+            <button class="btn btn-small" id="clearBtn" aria-label="Clear current content">
+              🗑️ Clear
+            </button>
+          </div>
+        </section>
+        
+        <!-- Theme Selection -->
+        <section class="sidebar-section">
+          <h2>Theme</h2>
+          <div id="themeSelectorContainer"></div>
+        </section>
+        
+        <!-- Theme Editor (visible only for custom theme) -->
+        <section class="sidebar-section" id="themeEditorSection">
+          <h2>Customize Theme</h2>
+          <div id="themeEditorContainer"></div>
+        </section>
+        
+        <!-- Export Section -->
+        <section class="sidebar-section">
+          <h2>Export</h2>
+          <button class="btn btn-primary" id="downloadHtmlBtn" style="width: 100%; margin-bottom: 0.5rem;">
+            ⬇️ Download HTML
+          </button>
+          <button class="btn" id="downloadZipBtn" style="width: 100%;" disabled title="Coming soon">
+            📦 Download ZIP
+          </button>
+        </section>
+        
+        <!-- Info Section -->
+        <section class="sidebar-section">
+          <h2>About</h2>
+          <p style="font-size: 0.8125rem; color: var(--ui-text-muted); line-height: 1.5;">
+            A lightweight vanilla JavaScript library for converting Markdown to beautiful, themed HTML in your browser.
+          </p>
+          <p style="font-size: 0.8125rem; color: var(--ui-text-muted); margin-top: 0.5rem;">
+            <a href="https://github.com" style="color: var(--ui-primary); text-decoration: none;">View on GitHub</a>
+          </p>
+        </section>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content" role="main">
+      <!-- Toolbar -->
+      <div class="toolbar" role="toolbar" aria-label="Preview controls">
+        <button class="btn btn-icon mobile-toggle" id="mobileToggle" aria-label="Toggle sidebar">
+          ☰
+        </button>
+        <div class="toolbar-group">
+          <span style="font-weight: 500; font-size: 0.875rem;">Preview</span>
+        </div>
+        <div class="toolbar-group">
+          <!-- Additional controls can go here -->
+        </div>
+      </div>
+      
+      <!-- Preview Container -->
+      <div class="preview-container" id="previewContainer" role="article" aria-live="polite">
+        <div class="md-preview">
+          <p style="text-align: center; color: var(--ui-text-muted);">
+            Loading...
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Scripts -->
+  <script type="module" src="./src/ui/demo.js"></script>
+</body>
+</html>
