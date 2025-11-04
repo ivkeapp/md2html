@@ -46,17 +46,22 @@ renderMarkdown('# Hello from Browser!');
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>md2html Demo</title>
 </head>
 <body>
   <div id="preview"></div>
   
-  <script type="module">
-    import md2html from 'https://unpkg.com/md2html-themes@latest/dist/md2html.min.js';
-    
-    const result = await md2html.parse('# Hello World\n\n**Markdown** is easy!');
-    document.getElementById('preview').innerHTML = result.html;
-    md2html.applyTheme(md2html.themes.light);
+  <!-- Load from CDN -->
+  <script src="https://unpkg.com/md2html-themes@latest/dist/md2html.min.js"></script>
+  
+  <script>
+    // md2html is available as a global variable
+    (async () => {
+      const result = await md2html.parse('# Hello World\n\n**Markdown** is easy!');
+      document.getElementById('preview').innerHTML = result.html;
+      md2html.applyTheme(md2html.themes.light);
+    })();
   </script>
 </body>
 </html>

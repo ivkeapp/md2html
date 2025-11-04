@@ -49,24 +49,36 @@ npm install md2html-themes
 
 ### 2. CDN
 
-For quick prototyping or simple HTML pages:
+For quick prototyping or simple HTML pages (no build step required):
 
 #### Using unpkg:
 ```html
-<script type="module">
-  import md2html from 'https://unpkg.com/md2html-themes@latest/dist/md2html.min.js';
+<!DOCTYPE html>
+<html>
+<head>
+  <title>md2html Example</title>
+</head>
+<body>
+  <div id="output"></div>
   
-  // Use md2html here
-</script>
+  <!-- Load from CDN -->
+  <script src="https://unpkg.com/md2html-themes@latest/dist/md2html.min.js"></script>
+  
+  <script>
+    // md2html is available as a global variable
+    (async () => {
+      const result = await md2html.parse('# Hello World');
+      document.getElementById('output').innerHTML = result.html;
+      md2html.applyTheme(md2html.themes.light);
+    })();
+  </script>
+</body>
+</html>
 ```
 
 #### Using jsDelivr:
 ```html
-<script type="module">
-  import md2html from 'https://cdn.jsdelivr.net/npm/md2html-themes@latest/dist/md2html.min.js';
-  
-  // Use md2html here
-</script>
+<script src="https://cdn.jsdelivr.net/npm/md2html-themes@latest/dist/md2html.min.js"></script>
 ```
 
 ### 3. Download and Self-Host
@@ -94,12 +106,11 @@ console.log('md2html loaded:', typeof md2html.parse);
 // Should output: md2html loaded: function
 ```
 
-### Browser Console:
+### Browser Console (with CDN):
 ```javascript
-import('https://unpkg.com/md2html-themes@latest/dist/md2html.min.js')
-  .then(module => {
-    console.log('md2html loaded:', typeof module.default.parse);
-  });
+// After loading the script tag, md2html is available globally
+console.log('md2html loaded:', typeof md2html.parse);
+// Should output: md2html loaded: function
 ```
 
 ## Dependencies

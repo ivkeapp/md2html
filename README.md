@@ -34,9 +34,7 @@ yarn add md2html-themes
 
 **CDN:**
 ```html
-<script type="module">
-  import md2html from 'https://unpkg.com/md2html-themes@latest/dist/md2html.min.js';
-</script>
+<script src="https://unpkg.com/md2html-themes@latest/dist/md2html.min.js"></script>
 ```
 
 📦 **NPM Package:** [md2html-themes](https://www.npmjs.com/package/md2html-themes)
@@ -109,20 +107,28 @@ const fullHtml = md2html.toFullHtml(
 );
 ```
 
-### Browser Usage (CDN)
+### Browser Usage (CDN - No Build Step)
 
 ```html
 <!DOCTYPE html>
 <html>
+<head>
+  <meta charset="UTF-8">
+  <title>md2html Demo</title>
+</head>
 <body>
   <div id="preview"></div>
   
-  <script type="module">
-    import md2html from 'https://unpkg.com/md2html-themes@latest/dist/md2html.min.js';
-    
-    const result = await md2html.parse('# Hello from CDN!\n\n**No build step required!**');
-    document.getElementById('preview').innerHTML = result.html;
-    md2html.applyTheme(md2html.themes.light);
+  <!-- Load from CDN -->
+  <script src="https://unpkg.com/md2html-themes@latest/dist/md2html.min.js"></script>
+  
+  <script>
+    // md2html is now available as a global variable
+    (async () => {
+      const result = await md2html.parse('# Hello from CDN!\n\n**No build step required!**');
+      document.getElementById('preview').innerHTML = result.html;
+      md2html.applyTheme(md2html.themes.light);
+    })();
   </script>
 </body>
 </html>
