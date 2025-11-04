@@ -1,0 +1,12 @@
+# Build output
+dist/
+node_modules/
+
+# Test results
+coverage/
+test-results/
+playwright-report/
+
+# Generated files
+*.min.js
+*.map

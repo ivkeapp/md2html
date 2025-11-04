@@ -29,7 +29,7 @@ const DEFAULT_CONFIG = {
     'type', 'checked', 'disabled', // For checkboxes
     'align', 'colspan', 'rowspan' // For tables
   ],
-  ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+  ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i,
   KEEP_CONTENT: true,
   RETURN_TRUSTED_TYPE: false
 };
