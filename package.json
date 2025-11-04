@@ -19,6 +19,9 @@
   "bugs": {
     "url": "https://github.com/ivkeapp/md2html/issues"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "vite public --open",
     "build": "vite build && npm run bundle",
