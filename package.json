@@ -1,6 +1,6 @@
 {
   "name": "md2html-themes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A lightweight, dependency-minimal JavaScript library for converting Markdown to themed HTML in-browser",
   "main": "dist/md2html.min.js",
   "type": "module",
