@@ -2,19 +2,19 @@
 
 A lightweight, dependency-minimal JavaScript library for converting Markdown to themed HTML directly in the browser.
 
-[![CI](https://github.com/yourusername/md2html/workflows/CI/badge.svg)](https://github.com/yourusername/md2html/actions)
+[![CI](https://github.com/ivkeapp/md2html/actions)](https://github.com/ivkeapp/md2html/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ## Features
 
-- ✨ **GitHub Flavored Markdown** - Full GFM support including tables, task lists, and strikethrough
-- 🎨 **Three Built-in Themes** - Light, dark, and fully customizable themes
-- 🔒 **XSS Protection** - Built-in HTML sanitization with DOMPurify
-- ⚡ **Zero Server Required** - Runs entirely in the browser
-- 📦 **Lightweight** - Minimal dependencies, optimized bundle size
-- ♿ **Accessible** - WCAG-compliant UI with keyboard navigation
-- 📱 **Responsive** - Mobile-friendly interface
-- 🚀 **Fast** - Instant live preview with theme switching
+- **GitHub Flavored Markdown** - Full GFM support including tables, task lists, and strikethrough
+- **Three Built-in Themes** - Light, dark, and fully customizable themes
+- **XSS Protection** - Built-in HTML sanitization with DOMPurify
+- **Zero Server Required** - Runs entirely in the browser
+- **Lightweight** - Minimal dependencies, optimized bundle size
+- **Accessible** - WCAG-compliant UI with keyboard navigation
+- **Responsive** - Mobile-friendly interface
+- **Fast** - Instant live preview with theme switching
 
 ## Quick Start
 
@@ -267,9 +267,9 @@ See [LICENSE](LICENSE) for details.
 
 ## Support
 
-- 📖 [Documentation](docs/)
-- 🐛 [Issue Tracker](https://github.com/yourusername/md2html/issues)
-- 💬 [Discussions](https://github.com/yourusername/md2html/discussions)
+- [Documentation](docs/)
+- [Issue Tracker](https://github.com/ivkeapp/md2html/issues)
+- [Discussions](https://github.com/ivkeapp/md2html/discussions)
 
 ---
 

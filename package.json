@@ -4,6 +4,21 @@
   "description": "A lightweight, dependency-minimal JavaScript library for converting Markdown to themed HTML in-browser",
   "main": "dist/md2html.min.js",
   "type": "module",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivkeapp/md2html.git"
+  },
+  "homepage": "https://github.com/ivkeapp/md2html#readme",
+  "bugs": {
+    "url": "https://github.com/ivkeapp/md2html/issues"
+  },
   "scripts": {
     "start": "vite public --open",
     "build": "vite build && npm run bundle",
@@ -18,10 +33,13 @@
     "converter",
     "themes",
     "browser",
-    "gfm"
+    "gfm",
+    "md2html",
+    "markdown to html",
+    "md"
   ],
-  "author": "",
-  "license": "MIT",
+  "author": "Ivan Žarković",
+  "license": "GNU GENERAL PUBLIC LICENSE",
   "devDependencies": {
     "@playwright/test": "^1.40.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
