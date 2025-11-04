@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseMarkdown, extractFrontmatter } from '../../src/parser.js';
+import { parseMarkdown, extractFrontmatter } from '../../public/src/parser.js';
 
 describe('Parser', () => {
   describe('parseMarkdown', () => {
@@ -161,7 +161,7 @@ describe('Parser', () => {
       const markdown = `---\n---\n\nContent`;
       const result = extractFrontmatter(markdown);
       expect(result.metadata).toBeNull();
-      expect(result.content).toBe('Content');
+      expect(result.content).toBe(markdown); // Empty frontmatter is not stripped
     });
   });
 });

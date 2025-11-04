@@ -6,7 +6,7 @@ import {
   exportTheme,
   importTheme,
   themeToCssVariables
-} from '../../src/theme.js';
+} from '../../public/src/theme.js';
 
 describe('Theme', () => {
   describe('Built-in themes', () => {

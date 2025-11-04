@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sanitizeHtml, hasDangerousContent, sanitizeWithReport } from '../../src/sanitizer.js';
+import { sanitizeHtml, hasDangerousContent, sanitizeWithReport } from '../../public/src/sanitizer.js';
 
 describe('Sanitizer', () => {
   describe('sanitizeHtml', () => {
