@@ -2,7 +2,9 @@
 
 A lightweight, dependency-minimal JavaScript library for converting Markdown to themed HTML directly in the browser.
 
-[![CI](https://github.com/ivkeapp/md2html/actions)](https://github.com/ivkeapp/md2html/actions)
+[![NPM Version](https://img.shields.io/npm/v/md2html-themes.svg)](https://www.npmjs.com/package/md2html-themes)
+[![NPM Downloads](https://img.shields.io/npm/dm/md2html-themes.svg)](https://www.npmjs.com/package/md2html-themes)
+[![CI](https://github.com/ivkeapp/md2html/actions/workflows/publish.yml/badge.svg)](https://github.com/ivkeapp/md2html/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ## Features
@@ -20,43 +22,86 @@ A lightweight, dependency-minimal JavaScript library for converting Markdown to 
 
 ### Installation
 
+**NPM (Recommended):**
 ```bash
-# Install from NPM
 npm install md2html-themes
-
-# Or for development
-npm install
-npm run start
 ```
 
-Open http://localhost:3000 to see the demo.
+**Yarn:**
+```bash
+yarn add md2html-themes
+```
 
-### Basic Usage
-
+**CDN:**
 ```html
-<script src="dist/md2html.min.js"></script>
-<script>
-  const markdown = '# Hello World\n\nThis is **bold** text.';
-  const result = await md2html.parse(markdown);
-  
-  document.getElementById('preview').innerHTML = result.html;
-  md2html.applyTheme(md2html.themes.light);
+<script type="module">
+  import md2html from 'https://unpkg.com/md2html-themes@latest/dist/md2html.min.js';
 </script>
 ```
 
-### ES Module
+📦 **NPM Package:** [md2html-themes](https://www.npmjs.com/package/md2html-themes)
+
+### Getting Started Example
+
+After installing via NPM, create a simple HTML file and JavaScript module:
+
+**index.html:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>md2html Example</title>
+</head>
+<body>
+  <h1>Markdown to HTML Converter</h1>
+  <textarea id="input" rows="10" cols="80">
+# Hello World
+
+This is **bold** and this is *italic*.
+
+- Item 1
+- Item 2
+- Item 3
+  </textarea>
+  <button id="convert">Convert</button>
+  <div id="output"></div>
+  
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
+```
+
+**app.js:**
+```javascript
+import md2html from 'md2html-themes';
+
+document.getElementById('convert').addEventListener('click', async () => {
+  const markdown = document.getElementById('input').value;
+  const result = await md2html.parse(markdown);
+  
+  document.getElementById('output').innerHTML = result.html;
+  md2html.applyTheme(md2html.themes.light);
+});
+```
+
+Then run with a dev server (e.g., `npx vite` or `python -m http.server`).
+
+### Basic Usage (NPM)
 
 ```javascript
 import md2html from 'md2html-themes';
 
 // Parse markdown
-const result = await md2html.parse('# Hello World');
-console.log(result.html);
+const result = await md2html.parse('# Hello World\n\nThis is **bold** text.');
 
-// Apply theme
+// Display in your web page
+document.getElementById('preview').innerHTML = result.html;
+
+// Apply a theme
 md2html.applyTheme(md2html.themes.dark);
 
-// Generate full HTML document
+// Or generate a complete HTML document
 const fullHtml = md2html.toFullHtml(
   result.html,
   md2html.themes.dark,
@@ -64,13 +109,33 @@ const fullHtml = md2html.toFullHtml(
 );
 ```
 
+### Browser Usage (CDN)
+
+```html
+<!DOCTYPE html>
+<html>
+<body>
+  <div id="preview"></div>
+  
+  <script type="module">
+    import md2html from 'https://unpkg.com/md2html-themes@latest/dist/md2html.min.js';
+    
+    const result = await md2html.parse('# Hello from CDN!\n\n**No build step required!**');
+    document.getElementById('preview').innerHTML = result.html;
+    md2html.applyTheme(md2html.themes.light);
+  </script>
+</body>
+</html>
+```
+
 ## Documentation
 
 Comprehensive documentation is available in the `/docs` directory:
 
-- [Introduction](docs/INTRODUCTION.md) - Overview and features
-- [Usage Guide](docs/USAGE.md) - Detailed usage examples
+- [Installation Guide](docs/INSTALLATION.md) - **📦 NPM, CDN, and installation methods**
+- [Usage Guide](docs/USAGE.md) - **🚀 Detailed usage examples and code snippets**
 - [API Reference](docs/API.md) - Complete API documentation
+- [Introduction](docs/INTRODUCTION.md) - Overview and features
 - [Theme Schema](docs/THEME_SCHEMA.md) - Theme customization guide
 - [Testing](docs/TESTING.md) - Testing strategy and guidelines
 - [Extending to PDF](docs/EXTENDING_TO_PDF.md) - Future PDF export plans

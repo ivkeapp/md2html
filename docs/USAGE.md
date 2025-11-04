@@ -1,19 +1,90 @@
-# Usage
+# Usage Guide
 
-## Quick start
+## Installation
 
-1. Install dependencies (development):
+First, install the package from NPM:
 
 ```bash
+npm install md2html-themes
+```
+
+See [INSTALLATION.md](./INSTALLATION.md) for detailed installation instructions including CDN and other methods.
+
+## Quick Start
+
+### Node.js / ES Modules
+
+```javascript
+import md2html from 'md2html-themes';
+
+// Parse markdown
+const result = await md2html.parse('# Hello World\n\nThis is **bold** text.');
+console.log(result.html);
+
+// Apply a theme
+md2html.applyTheme(md2html.themes.dark);
+```
+
+### Browser (with bundler)
+
+```javascript
+import md2html from 'md2html-themes';
+
+// Parse and render
+async function renderMarkdown(markdown) {
+  const result = await md2html.parse(markdown);
+  document.getElementById('preview').innerHTML = result.html;
+  md2html.applyTheme(md2html.themes.light);
+}
+
+renderMarkdown('# Hello from Browser!');
+```
+
+### Browser (CDN - no build step)
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>md2html Demo</title>
+</head>
+<body>
+  <div id="preview"></div>
+  
+  <script type="module">
+    import md2html from 'https://unpkg.com/md2html-themes@latest/dist/md2html.min.js';
+    
+    const result = await md2html.parse('# Hello World\n\n**Markdown** is easy!');
+    document.getElementById('preview').innerHTML = result.html;
+    md2html.applyTheme(md2html.themes.light);
+  </script>
+</body>
+</html>
+```
+
+## Development Setup (Contributing)
+
+If you want to develop or contribute to md2html:
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ivkeapp/md2html.git
+cd md2html
+```
+
+2. Install dependencies:
+```bash
 npm install
+```
+
+3. Start development server:
+```bash
 npm run start
 ```
 
-2. Open `public/index.html` (dev server will serve it at http://localhost:3000).
+4. Open http://localhost:3000 to see the demo app.
 
-3. Drag-and-drop a `.md` file or paste Markdown into the editor. The preview updates live.
-
-## Library usage (vanilla JS)
+## Library Usage Examples
 
 ### Basic Example
 
@@ -29,14 +100,29 @@ npm run start
 </script>
 ```
 
-### ES Module Import
+### Complete Example
 
 ```javascript
-import md2html from './dist/md2html.min.js';
+import md2html from 'md2html-themes';
 
-// Parse markdown
-const result = await md2html.parse('# Hello World');
-console.log(result.html); // <h1>Hello World</h1>
+async function processMarkdown() {
+  // Parse markdown
+  const result = await md2html.parse('# Hello World\n\nThis is a paragraph.');
+  
+  // result.html contains the parsed HTML
+  console.log(result.html);
+  
+  // result.metadata contains frontmatter (if any)
+  console.log(result.metadata);
+  
+  // Display in DOM
+  document.getElementById('preview').innerHTML = result.html;
+  
+  // Apply theme
+  md2html.applyTheme(md2html.themes.light);
+}
+
+processMarkdown();
 ```
 
 ### With Frontmatter
