@@ -25,82 +25,214 @@ A lightweight, dependency-minimal JavaScript library for converting Markdown to 
 **NPM (Recommended):**
 ```bash
 npm install md2html-themes
+npm install --save-dev vite  # Development server (required)
 ```
 
 **Yarn:**
 ```bash
 yarn add md2html-themes
+yarn add --dev vite
 ```
 
-**CDN:**
+**CDN (No build tools required):**
 ```html
 <script src="https://unpkg.com/md2html-themes@latest/dist/md2html.min.js"></script>
 ```
 
 📦 **NPM Package:** [md2html-themes](https://www.npmjs.com/package/md2html-themes)
 
-### Getting Started Example
+### Why You Need Vite
 
-After installing via NPM, create a simple HTML file and JavaScript module:
+This package uses **ES modules** (`import`/`export`). Modern browsers require ES modules to be served over HTTP, not opened directly as files (`file://` protocol).
+
+**Vite provides:**
+- ⚡ Instant server start (no bundling in dev)
+- 🔥 Hot Module Replacement (instant updates)
+- 📦 Zero configuration
+- 🚀 Optimized production builds
+
+**Alternative servers:** `http-server`, `serve`, Python's `http.server`, or VS Code Live Server extension will also work, but Vite provides the best developer experience.
+
+### Complete Working Example
+
+This example is **production-ready** and can be copied directly:
+
+#### 1. Setup Project
+
+```bash
+mkdir my-md2html-app
+cd my-md2html-app
+npm init -y
+npm install md2html-themes
+npm install --save-dev vite
+```
+
+#### 2. Create package.json
+
+**package.json:**
+```json
+{
+  "name": "my-md2html-app",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "md2html-themes": "^1.1.1"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
+```
+
+**Important:** `"type": "module"` enables ES module support.
+
+#### 3. Create HTML File
 
 **index.html:**
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>md2html Example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>md2html Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #output {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <h1>Markdown to HTML Converter</h1>
-  <textarea id="input" rows="10" cols="80">
-# Hello World
-
-This is **bold** and this is *italic*.
-
-- Item 1
-- Item 2
-- Item 3
-  </textarea>
-  <button id="convert">Convert</button>
-  <div id="output"></div>
-  
-  <script type="module" src="./app.js"></script>
+    <h1>md2html Converter</h1>
+    
+    <button id="convert">Convert Markdown</button>
+    <button id="theme-light">Light Theme</button>
+    <button id="theme-dark">Dark Theme</button>
+    
+    <div id="output"></div>
+    
+    <!-- CRITICAL: Must use type="module" for ES modules -->
+    <script type="module" src="index.js"></script>
 </body>
 </html>
 ```
 
-**app.js:**
+#### 4. Create JavaScript File
+
+**index.js:**
 ```javascript
+// Import the package
 import md2html from 'md2html-themes';
 
+console.log('md2html loaded successfully!');
+
+// Sample markdown
+const markdown = `# Hello World
+
+This is a **test** of the *md2html-themes* package.
+
+## Features:
+- ✅ Markdown parsing
+- ✅ Theme support
+- ✅ Live preview
+
+\`\`\`javascript
+console.log('Code blocks work too!');
+\`\`\`
+
+> This is a blockquote
+
+| Feature | Status |
+|---------|--------|
+| Working | ✅ |
+`;
+
+// Convert button
 document.getElementById('convert').addEventListener('click', async () => {
-  const markdown = document.getElementById('input').value;
-  const result = await md2html.parse(markdown);
-  
-  document.getElementById('output').innerHTML = result.html;
-  md2html.applyTheme(md2html.themes.light);
+    try {
+        const result = await md2html.parse(markdown);
+        const output = document.getElementById('output');
+        output.innerHTML = result.html;
+        console.log('Conversion successful!');
+    } catch (error) {
+        console.error('Conversion failed:', error);
+    }
+});
+
+// Light theme button
+document.getElementById('theme-light').addEventListener('click', () => {
+    const output = document.getElementById('output');
+    // NEW in v1.1.1: Automatic CSS injection - no manual CSS needed!
+    md2html.applyThemeWithStyles(md2html.themes.light, output);
+    console.log('Light theme applied');
+});
+
+// Dark theme button
+document.getElementById('theme-dark').addEventListener('click', () => {
+    const output = document.getElementById('output');
+    // NEW in v1.1.1: Automatic CSS injection
+    md2html.applyThemeWithStyles(md2html.themes.dark, output);
+    console.log('Dark theme applied');
+});
+
+// Auto-convert on page load
+window.addEventListener('load', () => {
+    document.getElementById('convert').click();
+    setTimeout(() => document.getElementById('theme-light').click(), 500);
 });
 ```
 
-**Then serve with a local dev server:**
+#### 5. Run Development Server
 
 ```bash
-# Option 1: Using Vite (recommended)
-npx vite
-
-# Option 2: Using http-server
-npx http-server
-
-# Option 3: Using Python
-python -m http.server 8000
+npm run dev
 ```
 
-Open the URL shown in the terminal (usually `http://localhost:5173` for Vite).
+**Output:**
+```
+VITE v5.x.x  ready in 250 ms
 
-> **Note:** You cannot open the HTML file directly (`file://`) due to CORS restrictions. You must use a local server.
+➜  Local:   http://localhost:5173/
+➜  press h to show help
+```
 
-### Basic Usage (NPM)
+#### 6. Open in Browser
+
+Open `http://localhost:5173` in your browser. You'll see:
+- Markdown automatically converted to HTML
+- Light theme applied by default
+- Clickable buttons to switch themes
+- Any code changes trigger instant HMR updates
+
+> **⚠️ Important:** Cannot open `index.html` directly (`file://` protocol). Must use a development server due to ES module CORS restrictions.
+
+### Basic Usage (NPM with Vite)
 
 ```javascript
 import md2html from 'md2html-themes';
@@ -109,19 +241,20 @@ import md2html from 'md2html-themes';
 const result = await md2html.parse('# Hello World\n\nThis is **bold** text.');
 
 // Display in your web page
-document.getElementById('preview').innerHTML = result.html;
+const preview = document.getElementById('preview');
+preview.innerHTML = result.html;
 
-// Apply a theme with automatic CSS injection (NEW in v1.1.0!)
-md2html.applyThemeWithStyles(md2html.themes.dark, document.getElementById('preview'));
+// NEW in v1.1.1: Apply theme with automatic CSS injection (recommended)
+md2html.applyThemeWithStyles(md2html.themes.dark, preview);
 
-// Or use legacy method (requires manual CSS)
+// Or use legacy method (requires manual CSS - not recommended)
 md2html.applyTheme(md2html.themes.dark);
 
-// Or generate a complete HTML document
+// Or generate a complete standalone HTML document
 const fullHtml = md2html.toFullHtml(
   result.html,
   md2html.themes.dark,
-  { title: 'My Document' }
+  { title: 'My Document', inlineStyles: true }
 );
 ```
 

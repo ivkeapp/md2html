@@ -1,18 +1,212 @@
 # Usage Guide
 
-## Installation
+## Prerequisites
 
-First, install the package from NPM:
+Before using md2html-themes, make sure you understand:
+
+1. **ES Modules** - This package uses modern JavaScript `import`/`export` syntax
+2. **Development Server** - You need a local server (like Vite) to develop with ES modules
+3. **Browser Support** - Requires modern browsers with ES module support
+
+See [INSTALLATION.md](./INSTALLATION.md) for complete setup instructions.
+
+## Installation
 
 ```bash
 npm install md2html-themes
+npm install --save-dev vite  # Required for development
 ```
 
-See [INSTALLATION.md](./INSTALLATION.md) for detailed installation instructions including CDN and other methods.
+**Why Vite?** Modern browsers require ES modules to be served over HTTP (not `file://`). Vite provides instant server startup, Hot Module Replacement (HMR), and zero configuration for ES modules.
 
-## Quick Start
+## Complete Working Example
 
-### Node.js / ES Modules
+This is a **production-ready example** that you can copy and use immediately:
+
+### Project Structure
+
+```
+my-project/
+├── package.json
+├── index.html
+└── index.js
+```
+
+### package.json
+
+```json
+{
+  "name": "my-md2html-project",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "md2html-themes": "^1.1.1"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
+```
+
+**Important fields:**
+- `"type": "module"` - Enables ES module support
+- `"dev": "vite"` - Starts development server with HMR
+- `vite` in devDependencies - Only needed during development, not in production
+
+### index.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>md2html Package Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #output {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>md2html Package Test</h1>
+    
+    <button id="convert">Convert Markdown</button>
+    <button id="theme-light">Light Theme</button>
+    <button id="theme-dark">Dark Theme</button>
+    
+    <div id="output"></div>
+    
+    <!-- CRITICAL: Must use type="module" for ES modules -->
+    <script type="module" src="index.js"></script>
+</body>
+</html>
+```
+
+### index.js
+
+```javascript
+// Import the package
+import md2html from 'md2html-themes';
+
+console.log('md2html package loaded:', md2html);
+
+// Test markdown content
+const testMarkdown = `# Hello World
+
+This is a **test** of the *md2html-themes* package.
+
+## Features:
+- Markdown parsing
+- Theme support
+- Easy to use
+
+\`\`\`javascript
+console.log('Hello from md2html!');
+\`\`\`
+
+> This is a blockquote
+
+| Feature | Status |
+|---------|--------|
+| Working | ✅ |
+`;
+
+// Convert button
+document.getElementById('convert').addEventListener('click', async () => {
+    try {
+        console.log('Converting markdown...');
+        const result = await md2html.parse(testMarkdown);
+        const output = document.getElementById('output');
+        output.innerHTML = result.html;
+        console.log('Conversion successful!', result);
+    } catch (error) {
+        console.error('Conversion failed:', error);
+    }
+});
+
+// Light theme button
+document.getElementById('theme-light').addEventListener('click', () => {
+    try {
+        const output = document.getElementById('output');
+        // NEW in v1.1.1: Automatic CSS injection
+        md2html.applyThemeWithStyles(md2html.themes.light, output);
+        console.log('Light theme applied with CSS');
+    } catch (error) {
+        console.error('Theme application failed:', error);
+    }
+});
+
+// Dark theme button
+document.getElementById('theme-dark').addEventListener('click', () => {
+    try {
+        const output = document.getElementById('output');
+        // NEW in v1.1.1: Automatic CSS injection
+        md2html.applyThemeWithStyles(md2html.themes.dark, output);
+        console.log('Dark theme applied with CSS');
+    } catch (error) {
+        console.error('Theme application failed:', error);
+    }
+});
+
+// Auto-convert on page load
+window.addEventListener('load', () => {
+    console.log('Page loaded, auto-converting...');
+    document.getElementById('convert').click();
+    
+    setTimeout(() => {
+        document.getElementById('theme-light').click();
+    }, 500);
+});
+```
+
+### Run the Project
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+Open the URL shown in the terminal (usually `http://localhost:5173`).
+
+**What you'll see:**
+- Markdown content automatically converted to HTML
+- Light theme applied by default
+- Click buttons to test theme switching
+- Any code changes trigger instant HMR updates
+
+## Quick Start Examples
+
+### Browser with Vite (Recommended for Development)
 
 ```javascript
 import md2html from 'md2html-themes';
@@ -21,43 +215,27 @@ import md2html from 'md2html-themes';
 const result = await md2html.parse('# Hello World\n\nThis is **bold** text.');
 console.log(result.html);
 
-// Apply a theme with automatic CSS injection (NEW in v1.1.0!)
+// Apply theme with automatic CSS injection (NEW in v1.1.1!)
 const container = document.getElementById('preview');
 container.innerHTML = result.html;
 md2html.applyThemeWithStyles(md2html.themes.dark, container);
 ```
 
-### Browser (with bundler)
+### Browser CDN (No Build Step)
 
-```javascript
-import md2html from 'md2html-themes';
-
-// Parse and render
-async function renderMarkdown(markdown) {
-  const result = await md2html.parse(markdown);
-  const preview = document.getElementById('preview');
-  preview.innerHTML = result.html;
-  
-  // NEW: Automatic CSS injection - no manual CSS needed!
-  md2html.applyThemeWithStyles(md2html.themes.light, preview);
-}
-
-renderMarkdown('# Hello from Browser!');
-```
-
-### Browser (CDN - no build step)
+For quick prototyping without any build tools:
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>md2html Demo</title>
+  <title>md2html CDN Demo</title>
 </head>
 <body>
   <div id="preview"></div>
   
-  <!-- Load from CDN -->
+  <!-- Load from CDN (UMD bundle) -->
   <script src="https://unpkg.com/md2html-themes@latest/dist/md2html.min.js"></script>
   
   <script>
@@ -67,13 +245,24 @@ renderMarkdown('# Hello from Browser!');
       const preview = document.getElementById('preview');
       preview.innerHTML = result.html;
       
-      // NEW in v1.1.0: CSS styles automatically included!
+      // NEW in v1.1.1: CSS styles automatically included!
       md2html.applyThemeWithStyles(md2html.themes.light, preview);
     })();
   </script>
 </body>
 </html>
 ```
+
+**CDN Benefits:**
+- ✅ No npm install needed
+- ✅ No build step required
+- ✅ Works immediately in any HTML file
+- ✅ Can open directly in browser (no CORS issues)
+
+**CDN Limitations:**
+- ❌ No tree-shaking (larger bundle size)
+- ❌ No module imports in your code
+- ❌ Harder to integrate with modern frameworks
 
 ## Theme Application Methods
 
@@ -179,7 +368,7 @@ npm run start
 </script>
 ```
 
-### Complete Example
+### Parse and Render Markdown
 
 ```javascript
 import md2html from 'md2html-themes';
@@ -190,15 +379,18 @@ async function processMarkdown() {
   
   // result.html contains the parsed HTML
   console.log(result.html);
+  // Output: <h1 id="hello-world">Hello World</h1>\n<p>This is a paragraph.</p>
   
   // result.metadata contains frontmatter (if any)
   console.log(result.metadata);
+  // Output: null (or object if frontmatter present)
   
   // Display in DOM
-  document.getElementById('preview').innerHTML = result.html;
+  const preview = document.getElementById('preview');
+  preview.innerHTML = result.html;
   
-  // Apply theme
-  md2html.applyTheme(md2html.themes.light);
+  // Apply theme with automatic CSS
+  md2html.applyThemeWithStyles(md2html.themes.light, preview);
 }
 
 processMarkdown();

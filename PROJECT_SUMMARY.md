@@ -1,15 +1,19 @@
 # Project Implementation Summary
 
 ## Overview
-Successfully implemented md2html - a complete, production-quality vanilla JavaScript library for converting Markdown to themed HTML in the browser.
+Successfully implemented md2html - a complete, production-quality vanilla JavaScript library for converting Markdown to themed HTML in the browser. Uses ES modules with NPM distribution and CDN support.
+
+**Current Version:** 1.1.1  
+**NPM Package:** [md2html-themes](https://www.npmjs.com/package/md2html-themes)
 
 ## What Was Built
 
-### ✅ Core Library (src/)
-- **index.js** - Public API with parse(), toFullHtml(), applyTheme(), export/import functions
+### ✅ Core Library (public/src/)
+- **index.js** - Public API with parse(), toFullHtml(), applyTheme(), applyThemeWithStyles(), export/import functions
 - **parser.js** - Markdown parsing using marked.js with GFM and frontmatter support
 - **sanitizer.js** - XSS protection using DOMPurify with comprehensive attack prevention
 - **theme.js** - Theme engine with light, dark, and custom themes using CSS variables
+  - **NEW in v1.1.1:** `applyThemeWithStyles()` - Automatic CSS injection (no manual CSS required)
 
 ### ✅ UI Components (src/ui/)
 - **demo.js** - Complete demo application with file loading, theme switching, and export
@@ -101,6 +105,7 @@ Successfully implemented md2html - a complete, production-quality vanilla JavaSc
 ### Theming
 ✅ Three built-in themes (light, dark, custom)
 ✅ CSS variable-based theme system
+✅ **NEW:** Automatic CSS injection via `applyThemeWithStyles()` - No manual CSS required
 ✅ Live theme switching
 ✅ Full theme customization (colors, typography, spacing, etc.)
 ✅ Theme export/import as JSON
@@ -151,8 +156,36 @@ Successfully implemented md2html - a complete, production-quality vanilla JavaSc
 
 ## Getting Started
 
+### For Users (NPM Package)
+
 ```bash
-# Install dependencies
+# Create new project
+mkdir my-md2html-app
+cd my-md2html-app
+
+# Initialize and install
+npm init -y
+npm install md2html-themes
+npm install --save-dev vite
+
+# Add to package.json:
+# "type": "module"
+# "scripts": { "dev": "vite" }
+
+# Create index.html and index.js (see INSTALLATION.md for complete examples)
+
+# Run development server
+npm run dev
+```
+
+**Why Vite?** ES modules require HTTP server (cannot use `file://` protocol). Vite provides instant server start, Hot Module Replacement (HMR), and zero configuration.
+
+### For Contributors (Development)
+
+```bash
+# Clone and install
+git clone https://github.com/ivkeapp/md2html.git
+cd md2html
 npm install
 
 # Start development server
